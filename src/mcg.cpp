@@ -28,6 +28,7 @@ void Tact::initFee ()
 	/* MCG->C4: DMX32=0,DRST_DRS=1 */
 	MCG->C4 &= ~(MCG_C4_DRST_DRS_MASK|MCG_C4_DMX32_MASK);
 	MCG->C4 |= MCG_C4_DRST_DRS(1);
+	
 
 	//=== Use FLL ===//
 	MCG->C5 = 0;
