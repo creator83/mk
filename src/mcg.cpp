@@ -1,4 +1,4 @@
-#include "tact.h"
+#include "mcg.h"
 
 uint16_t Tact::cpuClock;
 uint16_t Tact::busClock;
