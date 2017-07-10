@@ -25,7 +25,7 @@ void Tact::initFei ()
 	// SMC_PMPROT: AHSRUN=1,??=0,AVLP=1,??=0,ALLS=0,??=0,AVLLS=0,??=0
 	//Setup Power mode protection register
 	  SMC_PMPROT = (SMC_PMPROT_AHSRUN_MASK | SMC_PMPROT_AVLP_MASK);
-	  // SIM_CLKDIV1: OUTDIV1=0,OUTDIV2=0,??=0,??=0,??=0,??=0,OUTDIV4=1,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0
+	  // OUTDIV1(coreClock)=0,OUTDIV2(busClock)=0,OUTDIV4 (flashClock)=1
 	  SIM_CLKDIV1 = SIM_CLKDIV1_OUTDIV1(0x00) |
 	                SIM_CLKDIV1_OUTDIV2(0x00) |
 	                SIM_CLKDIV1_OUTDIV4(0x01);
@@ -58,10 +58,9 @@ void Tact::initFei ()
 	    OSC_CR = OSC_CR_ERCLKEN_MASK;
 	    /* MCG_C7: OSCSEL=0 */
 	MCG_C7 &= (uint8_t)~(uint8_t)(MCG_C7_OSCSEL(0x03));
-	while((MCG_S & MCG_S_IREFST_MASK) == 0x00U) { /* Check that the source of the FLL reference clock is the internal reference clock. */
-	}
-	while((MCG_S & 0x0CU) != 0x00U) {  /* Wait until output of the FLL is selected */
-	}
+	while((MCG_S & MCG_S_IREFST_MASK) == 0x00U);
+
+	while((MCG_S & 0x0CU) != 0x00U);
 }
 
 
