@@ -30,11 +30,8 @@ private:
 
   void initFei ();
   void initFee ();
-  void initFbi ();
-  void initFbe ();
-  void initPee ();
-
-  //===ext_OSC===//
+  void initBlpi ();
+  void initBlpe ();
 
 };
 

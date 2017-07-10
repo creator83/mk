@@ -2,7 +2,7 @@
 #include "gpio.h"
 #include "pin.h"
 #include "port.h"
-#include "tact.h"
+#include "mcg.h"
 #include "delay.h"
 
 Tact frq;
@@ -16,6 +16,6 @@ int main ()
 	while (1)
 	{
 		led.togle();
-		delay_ms(1000);
+		//delay_ms(1000);
 	}
 }
