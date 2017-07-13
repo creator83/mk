@@ -5,7 +5,7 @@
 #include "mcg.h"
 #include "delay.h"
 
-Tact frq;
+//Tact frq;
 const char ledPin = 16;
 
 
