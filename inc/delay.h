@@ -1,5 +1,4 @@
 #include "device.h"
-#include "mcglight.h"
 #include "pit.h"
 
 #ifndef DELAY_H

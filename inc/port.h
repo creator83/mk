@@ -1,5 +1,5 @@
 #include "device.h"               // Device header
-#include "gpio0x.h"
+#include "gpio.h"
 
 #ifndef PORT_H
 #define PORT_H

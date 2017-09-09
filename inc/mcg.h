@@ -1,37 +1,47 @@
 #include "device.h"             // Device header
 
-#ifndef TACT_H
-#define TACT_H
+#ifndef MCG_H
+#define MCG_H
 
 
-class Tact
+class Mcg
 {
   //variables
 public:
-  enum divider {div1, div2, div4, div8, div16, div32, div64, div128};
-
+	enum class mcgOutClk {fll, internal, external};
+	enum class fllDivider {div1_32, div2_64, div4_128, div8_256, div16_512, 
+	div32_1024, div64_1280, div128_1536};
+	enum class fllSource {external, internal};
+	enum class freqRange {lowFreq, highFreq, vHighFreq};
+	enum class extSource {external, oscillator};
+	enum class intSource {slow, fast};
  private:
-  static uint16_t cpuClock;
-  static uint16_t busClock;
-  static uint16_t mcgirClock;
-  static uint16_t mcgpllClock;
-  static uint16_t mcgfllClock;
-  uint8_t src;
+
+	
+  uint8_t nFllDivider;
+	uint8_t nMcgOutClk;
+	uint8_t nFllSource;
+	uint8_t nFreqRange;
+	uint8_t nExtSource;
+	uint8_t nIntSource;
   //functions
 public:
-  Tact ();
-  static uint16_t & getFrqCpu (){return cpuClock;};
-  static uint16_t & getFrqBus (){return busClock;};
-  static uint16_t & getFrqMcgir (){return mcgirClock;};
-  static uint16_t & getFrqMcgpll (){return mcgirClock;};
-  static uint16_t & getFrqMcgfll (){return mcgirClock;};
+  Mcg ();
+	void mcgIrclkEnable ();
+	void mcgIrclkDisable ();
+	void setMcgOutClk (mcgOutClk);
+	void setFllDivider (fllDivider);
+	void setFllSource (fllSource);
+	void setFreqRange (freqRange);
+	void setExtSource (extSource);
+	void setIntSource (intSource);
+	uint8_t getFllSource ();
+	uint8_t getMcgOutClk ();
+	uint8_t getIntSource ();
+
 
 private:
 
-  void initFei ();
-  void initFee ();
-  void initBlpi ();
-  void initBlpe ();
 
 };
 
