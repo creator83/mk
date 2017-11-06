@@ -1,5 +1,5 @@
 #include "device.h"
-
+#include "tact.h"
 
 
 #ifndef PIT_H
@@ -18,6 +18,7 @@ public:
 private:
 	uint8_t n_ch;
 	static ptr set_func [4];
+	Tact * tact;
 public:
 	Pit(channel ch, uint16_t n, mode m = ms);
 	void clear_flag ();

@@ -1,10 +1,11 @@
 #include "tact.h"
-
+/*
 uint16_t Tact::cpuClock;
 uint16_t Tact::busClock;
 uint16_t Tact::mcgirClock;
 uint16_t Tact::mcgpllClock;
-uint16_t Tact::mcgfllClock;
+uint16_t Tact::mcgfllClock;*/
+Tact * Tact::_instance = nullptr;
 
 Tact::Tact ()
 {
@@ -13,17 +14,29 @@ Tact::Tact ()
 	cpuClock = 20971;
 	busClock = 20971;
 }
+Tact * Tact::getInstance()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new Tact ();
+	}
+	return _instance;
+}
 
 void Tact::init ()
 {
 	SIM->CLKDIV1 = SIM_CLKDIV1_OUTDIV1(0x00) //core clock divider
 								|SIM_CLKDIV1_OUTDIV2(0x00) //bus clock divider
+								|SIM_CLKDIV1_OUTDIV3(0x01) //flexBus clock divider
 								|SIM_CLKDIV1_OUTDIV4(0x01); //flash clock divider
 	setPllFllSource (Tact::pllFllSource::mcgFllClk);
-	setLptmrSource (Tact::lptmrSource::lpo);
- 
+	setLptmrSource (Tact::lptmrSource::lpo); 
 }
 
+uint16_t & Tact::getFrqBus ()
+{
+	return busClock;
+}
 void Tact::setPllFllSource (pllFllSource s)
 {
 	nPllFllSource = static_cast<uint8_t>(s);
@@ -47,9 +60,10 @@ void Tact::initFei ()
 	mcg.setFreqRange (Mcg::freqRange::vHighFreq);
 	mcg.setExtSource (Mcg::extSource::oscillator);
 	mcg.setIntSource (Mcg::intSource::slow);
-	MCG->C7 &= (uint8_t)~(uint8_t)(MCG_C7_OSCSEL(0x03));
 	while (!mcg.getFllSource());
 	while (mcg.getMcgOutClk()!= 0);
 	
 }
+
+
 
