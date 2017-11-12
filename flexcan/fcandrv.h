@@ -382,6 +382,8 @@ typedef struct TFCAN_MsgBuf
 
 } TFCAN_MSG_STRUCT, * FCAN_MSG_STRUCT_PTR;
 
+
+
 typedef struct TFCAN_Regs
 {   
    uint_32  CANMCR;      // Module Configuration Register

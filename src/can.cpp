@@ -152,4 +152,34 @@ bool Can::receive (CanFrame *frame, uint8_t *data){
 	return true;
 }
 
+bool Can::start (nCan n){
+	canNumber = static_cast <uint8_t>(n);
+	//Starting FLEXCAN in normal mode
+	canBase[canNumber]->MCR &=~ CAN_MCR_HALT_MASK;
+	//wait for synchronization	
+   while(canBase[canNumber]->MCR & CAN_MCR_FRZACK_MASK);
+   while((canBase[canNumber]->MCR & CAN_MCR_NOTRDY_MASK));
+   return true;
+}
 
+bool Can::softReset (nCan n){
+	canNumber = static_cast <uint8_t>(n);
+	// check for low power mode
+  if(canBase[canNumber]->MCR & CAN_MCR_LPMACK_MASK )
+  {
+     // Enable clock
+     canBase[canNumber]->MCR &= (~CAN_MCR_MDIS_MASK);
+		 // wait until enabled
+	 while (canBase[canNumber]->MCR & CAN_MCR_LPMACK_MASK);
+  }
+
+  // Reset the FLEXCAN
+  canBase[canNumber]->MCR = CAN_MCR_SOFTRST_MASK;
+
+  // Wait for reset cycle to complete
+  while (canBase[canNumber]->MCR & CAN_MCR_SOFTRST_MASK);
+
+  // Set Freeze, Halt
+  canBase[canNumber]->MCR |= CAN_MCR_HALT_MASK;
+	return true;	
+}

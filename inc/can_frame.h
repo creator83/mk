@@ -11,12 +11,13 @@ public:
 	enum class frameType {standart, extended};
 	enum class remoteFrame {disable, enable};
 private:
-		uint32_t id;
-		uint32_t mbIndex;
-		frameType ide;
-		remoteFrame rtr;
-		uint8_t dlc;
-	
+	uint32_t id;
+	uint32_t mbIndex;
+	frameType ide;
+	remoteFrame rtr;
+	uint8_t dlc;
+
+		
 public:
   
   CanFrame (uint32_t id, uint32_t mbIndex, frameType ide, remoteFrame rtr, uint8_t dlc);

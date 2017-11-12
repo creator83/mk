@@ -11,6 +11,7 @@ class Can
 public:
 	enum class nCan {can0, can1};
 	enum class filter {enable, disable};
+	enum class mode {normal, listen, timesync, loopback, boffrec, freeze, disable};
 private:
 	using voidFunc = void (Can::*)();
 	static CAN_Type * canBase[2];
@@ -30,6 +31,16 @@ private:
 	void tactCan0();
 	void tactCan1();
 	void init(filter f);
+	bool start (nCan);
+	bool softReset (nCan);
+	void setMode (mode);
+	void setNormalMode ();
+	void setListenMode ();
+	void setTimesyncMode ();
+	void setLoopbackMode ();
+	void setBoffrecMode ();
+	void setfreezeMode ();
+	void setDisableMode ();
 };
 
  
