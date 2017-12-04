@@ -11,6 +11,7 @@ public:
 	enum class frameType {standart, extended};
 	enum class remoteFrame {disable, enable};
 private:
+	
 	uint32_t id;
 	uint32_t mbIndex;
 	frameType ide;

@@ -93,7 +93,7 @@ void Spi::transmit (uint16_t data)
 
 uint8_t Spi::receive ()
 {
-
+	return 0;	
 }
 
 uint8_t Spi::exchange (uint8_t data)

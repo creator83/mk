@@ -34,14 +34,14 @@ void Mcg::setFllSource (fllSource s)
 
 void Mcg::setFreqRange (freqRange r)
 {
-	MCG->C2 &=~ MCG_C2_RANGE0(3);
-	MCG->C2 |= MCG_C2_RANGE0(r);
+	MCG->C2 &=~ MCG_C2_RANGE(3);
+	MCG->C2 |= MCG_C2_RANGE(r);
 }
 
 void Mcg::setExtSource (extSource s)
 {
-	MCG->C2 &=~ MCG_C2_EREFS0_MASK;
-	MCG->C2 |= static_cast <uint8_t>(s) << MCG_C2_EREFS0_SHIFT;
+	MCG->C2 &=~ MCG_C2_EREFS_MASK;
+	MCG->C2 |= static_cast <uint8_t>(s) << MCG_C2_EREFS_SHIFT;
 }
 
 void Mcg::setIntSource (intSource s)

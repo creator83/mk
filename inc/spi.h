@@ -1,5 +1,6 @@
 #include "device.h"
 #include "pin.h"
+#include "spi_dev.h"
 
 #ifndef SPI_H
 #define SPI_H
@@ -50,8 +51,11 @@ static struct Ctar_set
 
 //functions
 public:
-
+	//constructor for Spi0
   Spi(Role r=Role::master);
+
+	//constructor for all module
+	Spi();
 
   void set_cpol (Cpol c = Cpol::neg);
   void set_cpha (Cpha c = Cpha::first);
@@ -93,3 +97,4 @@ typedef uint16_t(Spi::*ptr_ex)(uint16_t) ;
 typedef void(Spi::*PotMemF)(uint16_t) ;
 
 #endif
+

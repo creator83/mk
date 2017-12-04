@@ -6,7 +6,7 @@
 #include "delay.h"
 #include "dispatcher.h"
 
-Tact frq;
+
 Pin led1 (Gpio::Port::D, 5);
 Pin led2 (Gpio::Port::D, 6);
 Pin led3 (Gpio::Port::D, 7);
@@ -31,6 +31,7 @@ class Item
 
 int main ()
 {
+	Tact::getInstance ();
 	Dispatcher turn;
 	turn.addTask (f1, 4);
 	turn.addTask (f2, 6);

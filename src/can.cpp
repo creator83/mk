@@ -118,7 +118,7 @@ bool Can::receive (CanFrame *frame, uint8_t *data){
 	if(code != 0x02)
 	{
 		//???????
-		frame->setIde(CanFrame::frameType::normal);
+		frame->setIde(CanFrame::frameType::standart);
 		return false;
 	}
 	length = frame->getLength(canBase[canNumber]->MB[frame->getMbIndex()].CS);
