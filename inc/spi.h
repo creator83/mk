@@ -80,6 +80,7 @@ Spi(numberSpi nSpi, ctarNumber nCtar, csNumber cs, role r=role::master);
   uint8_t exchange (uint8_t data);
 
   //void putData (uint16_t data, CS_number, CTAR_number, State cont = State::off);
+
   uint16_t get_data ();
   bool flag_tcf ();
   bool flag_tfff ();

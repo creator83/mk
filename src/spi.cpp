@@ -46,7 +46,7 @@ void Spi::updateCtar (){
 
 void Spi::transmit (uint16_t data)
 {
-
+ spiPtr->PUSHR = txCommand.set|data;
 }
 
 
