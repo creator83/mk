@@ -25,7 +25,7 @@ private:
 	static Tact * _instance;
 public:
   
-  static Tact * getInstance();
+	static Tact * getInstance();
 	uint16_t & getFrqBus ();
 	uint16_t & getFrqCpu ();
 	uint16_t & getFrqFlex ();
@@ -33,10 +33,10 @@ private:
 	Tact ();
 	void init ();
 	void initFei ();
-  void initFee ();
-  void initFbi ();
-  void initFbe ();
-  void initPee ();
+	void initFee ();
+	void initFbi ();
+	void initFbe ();
+	void initPee ();
 	void setPllFllSource (pllFllSource);
 	void setLptmrSource (lptmrSource);
 };

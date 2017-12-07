@@ -2,51 +2,51 @@
 
 Spi::Spi(numberSpi nSpi, ctarNumber nCtar_, csNumber cs, role r)
 {
-  uint8_t nSpi_ = static_cast<uint8_t>(nSpi);
-  spiPtr = ((SPI_Type *)spiAddress[nSpi_]);
-  txCommand.txCommandBits.ctas = static_cast<uint8_t>(nCtar_);
-  //Turn on tacting Spi1
-  SIM->SCGC6 |= 1 << spiClockShift[nSpi_];
-  txCommand.txCommandBits.pcs = 1 << static_cast<uint8_t>(cs);
-  //Settings role and turn off tx and rx fifo
-  spiPtr->MCR &= ~ (SPI_MCR_MSTR_MASK|SPI_MCR_MDIS_MASK);
-  spiPtr->MCR |= (static_cast<uint8_t>(r) << SPI_MCR_MSTR_SHIFT)|SPI_MCR_DIS_TXF_MASK|SPI_MCR_DIS_RXF_MASK;//|SPI_MCR_PCSIS(1<<0);
-  //Start
-  spiPtr->SR |= SPI_SR_EOQF_MASK;
-  spiPtr->MCR &= ~(SPI_MCR_HALT_MASK|SPI_MCR_FRZ_MASK);
+	uint8_t nSpi_ = static_cast<uint8_t>(nSpi);
+	spiPtr = ((SPI_Type *)spiAddress[nSpi_]);
+	txCommand.txCommandBits.ctas = static_cast<uint8_t>(nCtar_);
+	//Turn on tacting Spi1
+	SIM->SCGC6 |= 1 << spiClockShift[nSpi_];
+	txCommand.txCommandBits.pcs = 1 << static_cast<uint8_t>(cs);
+	//Settings role and turn off tx and rx fifo
+	spiPtr->MCR &= ~ (SPI_MCR_MSTR_MASK|SPI_MCR_MDIS_MASK);
+	spiPtr->MCR |= (static_cast<uint8_t>(r) << SPI_MCR_MSTR_SHIFT)|SPI_MCR_DIS_TXF_MASK|SPI_MCR_DIS_RXF_MASK;//|SPI_MCR_PCSIS(1<<0);
+	//Start
+	spiPtr->SR |= SPI_SR_EOQF_MASK;
+	spiPtr->MCR &= ~(SPI_MCR_HALT_MASK|SPI_MCR_FRZ_MASK);
 }
 
 void Spi::setCpol (cpol c)
 {
 	ctar.ctarBits.cpol = static_cast<uint8_t>(c);
- updateCtar ();
+	updateCtar ();
 }
 
 void Spi::setCpha (cpha c)
 {
 	ctar.ctarBits.cpha = static_cast<uint8_t>(c);
- updateCtar ();
+	updateCtar ();
 }
 
 void Spi::setfSize (fSize f)
 {
 	ctar.ctarBits.fmsz = static_cast<uint8_t>(f);
- updateCtar ();
+	updateCtar ();
 }
 
 void Spi::setBaudrate (division d)
 {
 	ctar.ctarBits.br = static_cast<uint8_t>(d);
- updateCtar ();
+	updateCtar ();
 }
 
 void Spi::updateCtar (){
- spiPtr->CTAR[nCtar] = ctar.set;
+	spiPtr->CTAR[nCtar] = ctar.set;
 }
 
 void Spi::transmit (uint16_t data)
 {
- spiPtr->PUSHR = txCommand.set|data;
+	spiPtr->PUSHR = txCommand.set|data;
 }
 
 
