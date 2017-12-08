@@ -69,7 +69,7 @@ Spi(numberSpi nSpi, ctarNumber nCtar, csNumber cs, role r=role::master);
 
   void setCpol (cpol c = cpol::neg);
   void setCpha (cpha c = cpha::first);
-  void setfSize (fSize f = fSize::bit_8);
+  void setFrameSize (fSize f = fSize::bit_8);
   void setBaudrate (division d);
   void setCtar (ctarNumber);
   void updateCtar ();

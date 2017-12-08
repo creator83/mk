@@ -28,7 +28,7 @@ void Spi::setCpha (cpha c)
 	updateCtar ();
 }
 
-void Spi::setfSize (fSize f)
+void Spi::setFrameSize (fSize f)
 {
 	ctar.ctarBits.fmsz = static_cast<uint8_t>(f);
 	updateCtar ();
