@@ -65,23 +65,17 @@ class Ili9341: public Tftdriver
 {
 //variables
 public:
-	struct sFont
-	{
-		const uint8_t * font;
-		uint8_t width;
-		uint8_t height;
-		uint8_t shift;
-	};
+
 protected:
 private:
 	Spi * driver;
-	Dma * dma;
+	//Dma * dma;
 	Pin dc, rst;
 //functions
 public:
 	Ili9341(Spi &, Gpio::Port po, uint8_t p, Gpio::Port rstpo, uint8_t rstpi);
 
-	void setDma (Dma &);
+	//void setDma (Dma &);
 	void pixel (uint16_t x , uint16_t y, const uint16_t color) override;
 	void fillScreen (uint16_t color);
 	void fillScreenDma (const uint16_t * color);

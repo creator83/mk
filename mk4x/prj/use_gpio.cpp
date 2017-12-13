@@ -20,7 +20,6 @@ void f4 ();
 
 int main ()
 {
-
 	Dispatcher turn;
 	turn.addTask (f1, 4);
 	turn.addTask (f2, 6);
