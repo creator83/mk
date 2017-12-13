@@ -24,8 +24,8 @@ void Spi::setCpol (cpol c)
 
 void Spi::setCpha (cpha c)
 {
-	ctar.ctarBits.cpha = static_cast<uint8_t>(c);
-	updateCtar ();
+    ctar.ctarBits.cpha = static_cast<uint8_t>(c);
+    updateCtar ();
 }
 
 void Spi::setFrameSize (fSize f)
@@ -46,6 +46,7 @@ void Spi::updateCtar (){
 
 void Spi::transmit (uint16_t data)
 {
+    while (!flag_tfff());
 	spiPtr->PUSHR = txCommand.set|data;
 }
 
@@ -55,9 +56,9 @@ uint8_t Spi::receive ()
 	return 0;	
 }
 
-uint8_t Spi::exchange (uint8_t data)
+uint16_t Spi::exchange (uint16_t data)
 {
-
+    spiPtr->PUSHR = txCommand.set|data;
 }
 /*
 void Spi::putData (uint16_t data, CS_number cs, CTAR_number ctar, State cont)

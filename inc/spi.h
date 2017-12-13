@@ -77,7 +77,7 @@ Spi(numberSpi nSpi, ctarNumber nCtar, csNumber cs, role r=role::master);
   void settings ();
   void transmit (uint16_t data);
   uint8_t receive ();
-  uint8_t exchange (uint8_t data);
+  uint16_t exchange (uint16_t data);
 
   //void putData (uint16_t data, CS_number, CTAR_number, State cont = State::off);
 
