@@ -64,7 +64,8 @@ public:
 	void setChannel (dmaChannel ch);
 	void setSource (uint32_t  ptr);
 	void setDestination (uint32_t ptr);
-	void setLength (uint32_t length);
+	void setMinorLoop (uint16_t);
+    void setMajorLoop (uint16_t);
 	void setSizes (size m, size p);
 	void setSsize (size);
 	void setDsize (size);

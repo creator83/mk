@@ -9,17 +9,13 @@ Dma::Dma ()
 
 Dma::Dma (dmaChannel ch_)
 {
-	ch = (uint8_t)ch_;
+	ch = static_cast<uint8_t>(ch_);
 	SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
-	DMA0->DMA[ch].DSR_BCR |= DMA_DSR_BCR_DONE_MASK;
 }
 
 void Dma::enableDmaMux (dmaMux m)
 {
 	SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK;
-	DMAMUX0->CHCFG[ch] = 0;
-	DMAMUX0->CHCFG[ch] |= DMAMUX_CHCFG_SOURCE(m);
-	DMAMUX0->CHCFG[ch] |= DMAMUX_CHCFG_ENBL_MASK;
 }
 
 void Dma::setChannel (dmaChannel ch_)
@@ -30,17 +26,19 @@ void Dma::setChannel (dmaChannel ch_)
 
 void Dma::setSource (uint32_t ptr)
 {
-	DMA0->DMA[ch].SAR = ptr;
+	DMA0->TCD->SADDR = ptr;
 }
 
 void Dma::setDestination (uint32_t  ptr)
 {
-	DMA0->DMA[ch].DAR = ptr;
+	DMA0->TCD->DADDR = ptr;
 }
 
-void Dma::setLength (uint32_t length)
-{
-	DMA0->DMA[ch].DSR_BCR |= DMA_DSR_BCR_BCR(length);
+void setMinorLoop (uint16_t){
+    DMA0->TCD->
+}
+void setMajorLoop (uint16_t){
+    
 }
 
 void Dma::setSizes (size d, size s)
