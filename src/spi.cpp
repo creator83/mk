@@ -1,15 +1,17 @@
 #include "spi.h"
 
-Spi::Spi(numberSpi nSpi, ctarNumber nCtar_, csNumber cs, role r)
+Spi::Spi(numberSpi nSpi, ctarNumber n, csNumber cs, role r)
 {
 	uint8_t nSpi_ = static_cast<uint8_t>(nSpi);
 	spiPtr = ((SPI_Type *)spiAddress[nSpi_]);
-	txCommand.txCommandBits.ctas = static_cast<uint8_t>(nCtar_);
-	//Turn on tacting Spi1
+	//Turn on tacting
 	SIM->SCGC6 |= 1 << spiClockShift[nSpi_];
 	txCommand.txCommandBits.pcs = 1 << static_cast<uint8_t>(cs);
-	//Settings role and turn off tx and rx fifo
-	spiPtr->MCR &= ~ (SPI_MCR_MSTR_MASK|SPI_MCR_MDIS_MASK);
+	txFifoDisable();
+	rxFifoDisable();
+	//set ctar number
+	setCtar(n);
+	//Settings role
 	spiPtr->MCR |= (static_cast<uint8_t>(r) << SPI_MCR_MSTR_SHIFT)|SPI_MCR_DIS_TXF_MASK|SPI_MCR_DIS_RXF_MASK;//|SPI_MCR_PCSIS(1<<0);
 	//Start
 	spiPtr->SR |= SPI_SR_EOQF_MASK;
@@ -39,6 +41,23 @@ void Spi::setBaudrate (division d)
 	ctar.ctarBits.br = static_cast<uint8_t>(d);
 	updateCtar ();
 }
+void Spi::setCtar (ctarNumber c){
+	txCommand.txCommandBits.ctas = static_cast<uint8_t>(c);
+}
+void Spi::txFifoEnable(){
+	spiPtr->MCR &=~ SPI_MCR_DIS_TXF_MASK;
+}
+void Spi::txFifoDisable(){
+	spiPtr->MCR |= SPI_MCR_DIS_TXF_MASK;
+}
+
+void Spi::rxFifoEnable(){
+	spiPtr->MCR &=~ SPI_MCR_DIS_RXF_MASK;
+}
+
+void Spi::rxFifoDisable(){
+	spiPtr->MCR |= SPI_MCR_DIS_RXF_MASK;
+}
 
 void Spi::updateCtar (){
 	spiPtr->CTAR[nCtar] = ctar.set;
@@ -50,21 +69,23 @@ void Spi::transmit (uint16_t data)
 	spiPtr->PUSHR = txCommand.set|data;
 }
 
-
-uint8_t Spi::receive ()
+void Spi::transmit (uint16_t * data, uint32_t n)
 {
-	return 0;	
+    while (!flag_tfff());
+	spiPtr->PUSHR = txCommand.set|*data;
+}
+
+uint16_t Spi::receive ()
+{
+	while (!flag_rfof());
+	return spiPtr->POPR;	
 }
 
 uint16_t Spi::exchange (uint16_t data)
 {
-    spiPtr->PUSHR = txCommand.set|data;
+    transmit(data);
+	return receive();
 }
-/*
-void Spi::putData (uint16_t data, CS_number cs, CTAR_number ctar, State cont)
-{
-	SPI0->PUSHR = SPI_PUSHR_PCS(1<<(uint8_t)cs)|SPI_PUSHR_TXDATA(data)|SPI_PUSHR_CTAS(ctar)|(static_cast<uint8_t>(cont));
-}*/
 
 uint16_t Spi::get_data ()
 {

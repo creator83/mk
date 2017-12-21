@@ -21,21 +21,20 @@ void Dma::enableDmaMux (dmaMux m)
 void Dma::setChannel (dmaChannel ch_)
 {
 	ch = (uint8_t)ch_;
-	DMA0->DMA[ch].DSR_BCR |= DMA_DSR_BCR_DONE_MASK;
 }
 
 void Dma::setSource (uint32_t ptr)
 {
-	DMA0->TCD->SADDR = ptr;
+	DMA0->TCD[ch].SADDR = ptr;
 }
 
 void Dma::setDestination (uint32_t  ptr)
 {
-	DMA0->TCD->DADDR = ptr;
+	DMA0->TCD[ch].DADDR = ptr;
 }
 
-void setMinorLoop (uint16_t){
-    DMA0->TCD->
+void Dma::setMinorLoop (uint16_t n){
+   
 }
 void setMajorLoop (uint16_t){
     
@@ -43,32 +42,30 @@ void setMajorLoop (uint16_t){
 
 void Dma::setSizes (size d, size s)
 {
-	DMA0->DMA[ch].DCR &= ~(DMA_DCR_DSIZE_MASK|DMA_DCR_SSIZE_MASK);
-	DMA0->DMA[ch].DCR |= DMA_DCR_DSIZE(d)|DMA_DCR_SSIZE(s);
+	DMA0->TCD[ch].ATTR &=~ DMA_ATTR_DSIZE(0x07);
+	DMA0->TCD[ch].ATTR |= DMA_ATTR_DSIZE(d);
+	DMA0->TCD[ch].ATTR &=~ DMA_ATTR_SSIZE(0x07);
+	DMA0->TCD[ch].ATTR |= DMA_ATTR_SSIZE(s);
 }
 
 void Dma::setSsize (size s)
 {
-	DMA0->DMA[ch].DCR &= ~DMA_DCR_SSIZE_MASK;
-	DMA0->DMA[ch].DCR |= DMA_DCR_SSIZE(s);
+	DMA0->TCD[ch].ATTR &=~ DMA_ATTR_SSIZE(0x07);
+	DMA0->TCD[ch].ATTR |= DMA_ATTR_SSIZE(s);
 }
 
 void Dma::setDsize (size d)
 {
-	DMA0->DMA[ch].DCR &= ~DMA_DCR_DSIZE_MASK;
-	DMA0->DMA[ch].DCR |= DMA_DCR_DSIZE(d);
+	DMA0->TCD[ch].ATTR &=~ DMA_ATTR_DSIZE(0x07);
+	DMA0->TCD[ch].ATTR |= DMA_ATTR_DSIZE(d);
 }
 
 void Dma::setIncDestination (bool state)
 {
-	DMA0->DMA[ch].DCR &= ~ DMA_DCR_DINC_MASK;
-	DMA0->DMA[ch].DCR |= state << DMA_DCR_DINC_SHIFT;
 }
 
 void Dma::setIncSource (bool state)
 {
-	DMA0->DMA[ch].DCR &= ~ DMA_DCR_SINC_MASK;
-	DMA0->DMA[ch].DCR |= state << DMA_DCR_SINC_SHIFT;
 }
 
 void Dma::enableInterrupt ()

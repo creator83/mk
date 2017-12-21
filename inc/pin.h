@@ -15,11 +15,11 @@ private:
 //functions
 public:
 	Pin (){}
-	Pin (Port prt, uint8_t p , mux mx);
+	Pin (port prt, uint8_t p , mux mx);
 	Pin (uint8_t prt, uint8_t p , mux mx);
-	Pin (Port prt, uint8_t p);
-	Pin (Port prt, uint8_t p , PP m);
-	void setPort (Port);
+	Pin (port prt, uint8_t p);
+	Pin (port prt, uint8_t p , PP m);
+	void setPort (port);
 	void direction (mode m);
 	void setIn (PP pp_);
 	void setOut ();

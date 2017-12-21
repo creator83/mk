@@ -5,7 +5,9 @@
 #define DEVICE_H
 
 //===GPIO DEFENITION===//
-
+enum class port {A , B , C , D , E};
+const uint32_t portAddress [5]={PORTA_BASE, PORTB_BASE, PORTC_BASE, PORTD_BASE, PORTE_BASE};
+const uint32_t gpioAddress [5]={PTA_BASE, PTB_BASE, PTC_BASE, PTD_BASE, PTE_BASE};
 //===SPI DEFENITION===//
 enum class numberSpi {SPI_0=0};
 const uint32_t spiAddress [1]={SPI0_BASE};

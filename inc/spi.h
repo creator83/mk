@@ -63,35 +63,40 @@ union ctarDef
 //functions
 public:
 	//constructor for Spi0
-Spi(numberSpi nSpi, ctarNumber nCtar, csNumber cs, role r=role::master);
+	Spi(numberSpi nSpi, ctarNumber, csNumber cs, role r=role::master);
 
 	//constructor for all module
 
-  void setCpol (cpol c = cpol::neg);
-  void setCpha (cpha c = cpha::first);
-  void setFrameSize (fSize f = fSize::bit_8);
-  void setBaudrate (division d);
-  void setCtar (ctarNumber);
-  void updateCtar ();
+	void setCpol (cpol c = cpol::neg);
+	void setCpha (cpha c = cpha::first);
+	void setFrameSize (fSize f = fSize::bit_8);
+	void setBaudrate (division d);
+	void setCtar (ctarNumber);
+	void txFifoEnable();
+	void txFifoDisable();
+	void rxFifoEnable();
+	void rxFifoDisable();
+	void updateCtar ();
 
-  void settings ();
-  void transmit (uint16_t data);
-  uint8_t receive ();
-  uint16_t exchange (uint16_t data);
+	void settings ();
+	void transmit (uint16_t data);
+	void transmit (uint16_t * data, uint32_t n);
+	uint16_t receive ();
+	uint16_t exchange (uint16_t data);
 
-  //void putData (uint16_t data, CS_number, CTAR_number, State cont = State::off);
+	//void putData (uint16_t data, CS_number, CTAR_number, State cont = State::off);
 
-  uint16_t get_data ();
-  bool flag_tcf ();
-  bool flag_tfff ();
-  bool flag_tfuf ();
-  bool flag_txctr ();
-  bool flag_rfof ();
-  bool flag_rfdf ();
-  void clear_flag_tcf();
-  void clear_flag_tfuf();
-  void clear_flag_rfof();
-  void clear_flag_rfdf();
+	uint16_t get_data ();
+	bool flag_tcf ();
+	bool flag_tfff ();
+	bool flag_tfuf ();
+	bool flag_txctr ();
+	bool flag_rfof ();
+	bool flag_rfdf ();
+	void clear_flag_tcf();
+	void clear_flag_tfuf();
+	void clear_flag_rfof();
+	void clear_flag_rfdf();
 
 
 };
