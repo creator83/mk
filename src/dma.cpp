@@ -77,13 +77,13 @@ void Dma::setDLast (uint32_t val){
 void Dma::enableInterrupt ()
 {
 
-	NVIC_EnableIRQ(dmaInt[ch]);
+	//NVIC_EnableIRQ(dmaInt[ch]);
 }
 
 void Dma::disableInterrupt ()
 {
 
-	NVIC_DisableIRQ (dmaInt[ch]);
+	//NVIC_DisableIRQ (dmaInt[ch]);
 }
 
 void Dma::enablePeriph ()

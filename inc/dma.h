@@ -5,7 +5,6 @@
 
 class dma;
 
-typedef void (dma::*PTR_DMA)() ;
 
 class Dma
 {
