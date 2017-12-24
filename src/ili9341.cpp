@@ -44,7 +44,6 @@ void Ili9341::setArea (uint16_t x1 , uint16_t y1, uint16_t x2, uint16_t y2)
 void Ili9341::data8 (uint8_t dta)
 {
 	dc.set();
-	while (!driver->flag_tfff());
 	driver->transmit(dta);
 }
 
@@ -53,7 +52,6 @@ void Ili9341::data16 (uint16_t dta)
 {
 	dc.set();
 	driver->setFrameSize(Spi::fSize::bit_16);
-	while (!driver->flag_tfff());
 	driver->transmit(dta);
 	driver->setFrameSize(Spi::fSize::bit_8);
 }
@@ -61,7 +59,6 @@ void Ili9341::data16 (uint16_t dta)
 void Ili9341::command (uint8_t com)
 {
 	dc.clear();
-	while (!driver->flag_tfff());
 	driver->transmit(com);
 }
 
