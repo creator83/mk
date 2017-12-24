@@ -1,7 +1,5 @@
 #include "dma.h"
 
-IRQn Dma::dmaInt [4] = {DMA0_IRQn, DMA1_IRQn, DMA2_IRQn, DMA3_IRQn};
-
 Dma::Dma ()
 {
 	SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
@@ -34,9 +32,9 @@ void Dma::setDestination (uint32_t  ptr)
 }
 
 void Dma::setMinorLoop (uint16_t n){
-   
+   DMA0->TCD[ch].NBYTES_MLNO = n;
 }
-void setMajorLoop (uint16_t){
+void setMajorLoop (uint16_t n){
     
 }
 
@@ -60,52 +58,55 @@ void Dma::setDsize (size d)
 	DMA0->TCD[ch].ATTR |= DMA_ATTR_DSIZE(d);
 }
 
-void Dma::setIncDestination (bool state)
+void Dma::setOffsetDestination (uint32_t val)
 {
+	DMA0->TCD[ch].DOFF = val;
 }
 
-void Dma::setIncSource (bool state)
+void Dma::setOffsetSource (uint32_t val)
 {
+	DMA0->TCD[ch].SOFF = val;
 }
 
+void Dma::setSLast (uint32_t val){
+	DMA0->TCD[ch].SLAST = val;
+}
+void Dma::setDLast (uint32_t val){
+	DMA0->TCD[ch].DLAST_SGA = val;
+}
 void Dma::enableInterrupt ()
 {
-	DMA0->DMA[ch].DCR |= DMA_DCR_EINT_MASK;
+
 	NVIC_EnableIRQ(dmaInt[ch]);
 }
 
 void Dma::disableInterrupt ()
 {
-	DMA0->DMA[ch].DCR &= ~ DMA_DCR_EINT_MASK;
+
 	NVIC_DisableIRQ (dmaInt[ch]);
 }
 
 void Dma::enablePeriph ()
 {
-	DMA0->DMA[ch].DCR |= DMA_DCR_ERQ_MASK;
+
 }
 
 void Dma::disablePeriph ()
 {
-	DMA0->DMA[ch].DCR |= DMA_DCR_D_REQ_MASK| DMA_DCR_ERQ_MASK;
 }
 
 void Dma::start ()
 {
-	DMA0->DMA[ch].DCR |= DMA_DCR_START_MASK;
 }
 
 void Dma::clearFlags ()
 {
-	DMA0->DMA[ch].DSR_BCR |= DMA_DSR_BCR_DONE_MASK;
 }
 
 bool Dma::flagDone()
 {
-	return DMA0->DMA[ch].DSR_BCR&DMA_DSR_BCR_DONE_MASK;
 }
 
 uint8_t & Dma::getChannel ()
 {
-	return ch;
 }
