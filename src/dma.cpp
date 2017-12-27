@@ -9,6 +9,7 @@ Dma::Dma (dmaChannel ch_)
 {
 	ch = static_cast<uint8_t>(ch_);
 	SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
+	DMA0->ERQ |= 1 << ch;
 }
 
 void Dma::enableDmaMux (dmaMux m)
@@ -19,6 +20,7 @@ void Dma::enableDmaMux (dmaMux m)
 void Dma::setChannel (dmaChannel ch_)
 {
 	ch = (uint8_t)ch_;
+	DMA0->ERQ |= 1 << ch;
 }
 
 void Dma::setSource (uint32_t ptr)
@@ -97,6 +99,7 @@ void Dma::disablePeriph ()
 
 void Dma::start ()
 {
+	DMA0->TCD[ch].CSR |= DMA_CSR_START_MASK;
 }
 
 void Dma::clearFlags ()
@@ -105,8 +108,10 @@ void Dma::clearFlags ()
 
 bool Dma::flagDone()
 {
+	return DMA0->TCD[ch].CSR&DMA_CSR_DONE_MASK;
 }
 
 uint8_t & Dma::getChannel ()
 {
+	return ch;
 }
