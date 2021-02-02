@@ -65,29 +65,49 @@ class Ili9341
 {
 //variables
 public:
-
+    enum class resolution{res320x240, res400x240};
+    static uint8_t counter;
 protected:
 private:
-	Spi * driver;
-	//Dma * dma;
-	Pin dc, rst;
+    Pin dc, rst;
+	Spi * spiDriver;
+	Dma * mem2spi,* mem2mem;
+	
+    enum class commands{softwareReset = 0x01, powerControl1 = 0xC0,  powerControl2 = 0xC1, vcomControl1  = 0xC5,
+                        vcomControl2  = 0xC7, frameControl  = 0xB1, memoryAccessControl = 0x36, pixelFormatSet = 0x3A,
+                        displayFunctionControl = 0xB6, sleepOut = 0x11, displayOn = 0x29, coloumnAddressSet = 0x2A,
+                        pageAddressSet = 0x2B, memoryWrite   = 0x2C};
+    
+    uint16_t vertical;
+    uint16_t horisontal;
+    static uint16_t resolutionDef [2][2];
+    uint32_t resolutionData;
+    uint32_t currentColor;
+	uint32_t frameBuffer[1024];
+    uint16_t spiCommandWord;
 //functions
 public:
-	Ili9341(Spi &, port po, uint8_t p, port rstpo, uint8_t rstpi);
-
+	Ili9341(Spi &, Dma &, Dma &, port dcPort_, uint8_t dcPin_, port rstPort, uint8_t rstPin);
+    Ili9341(Spi &, port dcPort_, uint8_t dcPin_, port rstPort, uint8_t rstPin);
+    void setResolution(resolution);
 	void fillScreen (uint16_t color);
+    void fillScreenDma (uint16_t color);
+    void fillArea (uint16_t x1 , uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+    void drawFromArray (uint16_t x1 , uint16_t y1, uint16_t x2, uint16_t y2, uint32_t ptrAddress);
 	void setCursor (uint16_t x , uint16_t y);
 	void setArea (uint16_t x1 , uint16_t y1, uint16_t x2, uint16_t y2);
+    uint8_t calcCounter (uint32_t);
 protected:
 private:
 	void data8 (uint8_t);
 	void data16 (uint16_t);
-	void command (uint8_t);
+	void command (commands);
 	void write (uint8_t);
 	void init ();
 	void setPage (uint16_t x1, uint16_t x2);
 	void setColoumn (uint16_t y1, uint16_t y2);
 	void setPosition (uint16_t x, uint16_t y);
+    void dmaTransfer (uint16_t n);
 };
 
 #endif

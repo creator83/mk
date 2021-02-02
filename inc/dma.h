@@ -10,7 +10,7 @@ class Dma
 {
 	//variables
 public:
-	enum class size {bit32, bit8, bit16};
+	enum class size {bit8, bit16, bit32};
 private:
 	uint8_t ch;
 	//functions
@@ -21,21 +21,24 @@ public:
 	void setChannel (dmaChannel ch);
 	void setSource (uint32_t  ptr);
 	void setDestination (uint32_t ptr);
-	void setMinorLoop (uint16_t);
-    void setMajorLoop (uint16_t);
-	void setSizes (size m, size p);
+	void setCountMnrLoop (uint32_t);
+    void setCountMjrLoop (uint16_t);
 	void setSsize (size);
 	void setDsize (size);
 	void setOffsetDestination (uint32_t);
 	void setOffsetSource (uint32_t);
-	void setSLast (uint32_t);
-	void setDLast (uint32_t);
-	void enableInterrupt ();
-	void disableInterrupt ();
-	void enablePeriph ();
-	void disablePeriph ();
+	void setSLast (int32_t);
+	void setDLast (int32_t);
+    void setMjrLink(dmaChannel);
+    void setMjrLink(Dma &);
+    void triggerEnable();
+    void triggerDisable();
+	void enableInterruptMajor ();
+	void disableInterruptMajor ();
+    void startRequest ();
 	void start ();
 	void clearFlags ();
+    void setDREQ();
 	bool flagDone();
 	uint8_t & getChannel ();
 };

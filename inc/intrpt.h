@@ -11,9 +11,9 @@ public:
 	enum class mode {lowState = 8, risingEdge, fallingEdge, eitherEdge, highState};
 private:
 	Pin pin_;
-	//static IRQn source [4];
+
 public:
-	Intrpt (Gpio::Port, uint8_t, mode, Gpio::PP = Gpio::PP::PullUp);
+	Intrpt (port, uint8_t, mode, Gpio::PP = Gpio::PP::PullUp);
 	void clearFlag ();
 };
 

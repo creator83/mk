@@ -1,15 +1,15 @@
 #include "mcg.h"
 
-uint32_t Mcg::mcgOutClkDividerArr[2][8] = {{32, 64, 128, 256, 512, 1024, 1280, 1536},
-                                           {1, 2, 4, 8, 16, 32, 64, 128}};
+uint32_t Mcg::mcgOutClkDividerArr[2][8] = {{1, 2, 4, 8, 16, 32, 64, 128},
+                                        {32, 64, 128, 256, 512, 1024, 1280, 1536}};
 
 Mcg::Mcg (){
     mcgOutSourceArr[0] = &fllClock;
     mcgOutSourceArr[1] = &mcgIRClock;
     mcgOutSourceArr[2] = &extClock;
     rtc = 32000;
-    fllSourceArr[1] = &rtc;
-    fllSourceArr[0] = &extClock;
+    fllSourceArr[0] = &rtc;
+    fllSourceArr[1] = &extClock;
 }
 
 void Mcg::mcgIrclkEnable (){
@@ -22,7 +22,7 @@ void Mcg::mcgIrclkDisable (){
 void Mcg::setMcgOutClk (mcgOutSource s){
     mcgOutValue = static_cast <uint8_t>(s);
 	MCG->C1 &=~ MCG_C1_CLKS_MASK;
-	MCG->C1 |= MCG_C1_CLKS(s);
+	MCG->C1 &=~ MCG_C1_CLKS(s);
     mcgOutClk = *mcgOutSourceArr[mcgOutValue];
     while (getMcgOutSource()!=mcgOutValue);
 }
@@ -37,21 +37,20 @@ void Mcg::setFllDivider (fllDivider d){
 void Mcg::setFllSource (fllSource s){
     fllSourceValue = static_cast <uint8_t>(s); 
 	MCG->C1 &=~ MCG_C1_IREFS_MASK;
+    MCG->C1 |= MCG_C1_IREFS_MASK;
 	MCG->C1 |= fllSourceValue << MCG_C1_IREFS_SHIFT;
-    //read register c4 and multiplayer multip
     fllClock = *fllSourceArr[static_cast <uint8_t>(s)];
     while (getFllSource()!= static_cast<uint8_t>(s));
-    //fllClock /= mcgOutClkDividerArr[fllSourceValue][((MCG->C1&MCG_C1_FRDIV_MASK)>>MCG_C1_FRDIV_SHIFT)];
 }
 
 void Mcg::setFreqRange (freqRange r){
-	MCG->C2 &=~ MCG_C2_RANGE0_MASK;
-	MCG->C2 |= MCG_C2_RANGE0(r);
+	MCG->C2 &=~ MCG_C2_RANGE_MASK;
+	MCG->C2 |= MCG_C2_RANGE(r);
 }
 
 void Mcg::setExtSource (extSource s){
-	MCG->C2 &=~ MCG_C2_EREFS0_MASK;
-	MCG->C2 |= static_cast <uint8_t>(s) << MCG_C2_EREFS0_SHIFT;
+	MCG->C2 &=~ MCG_C2_EREFS_MASK;
+	MCG->C2 |= static_cast <uint8_t>(s) << MCG_C2_EREFS_SHIFT;
 }
 
 void Mcg::setIntSource (intSource s){
@@ -78,11 +77,6 @@ void Mcg::setFlashDivider (mcgOutClkDivider d){
     SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV4(flashDivider);
 }
 
-void Mcg::setFlexBusDivider (mcgOutClkDivider d){
-    flexbusDivider = static_cast<uint8_t>(d);
-    SIM->CLKDIV1 &= ~ SIM_CLKDIV1_OUTDIV3_MASK;
-    SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV3(flexbusDivider);
-}
 void Mcg::setFllMultiplication(dcoRange dco, multiplicationRangeFll m){
     MCG->C4 &= ~(MCG_C4_DRST_DRS_MASK);
     MCG->C4 |= MCG_C4_DMX32_MASK;
@@ -92,23 +86,23 @@ void Mcg::setFllMultiplication(dcoRange dco, multiplicationRangeFll m){
 }
 
 void Mcg::setOscilator (oscilator o){
-    MCG->C7 &= ~MCG_C7_OSCSEL_MASK;
-    MCG->C7 |=(static_cast<uint8_t>(o)) << MCG_C7_OSCSEL_SHIFT;
+    MCG->C7 = MCG_C7_OSCSEL(o);
 }
 void Mcg::setGain (gainOsc g){
-    MCG->C2 &= ~ MCG_C2_HGO0_MASK;
-    MCG->C2 |= (static_cast <uint8_t>(g)) << MCG_C2_HGO0_SHIFT;
+    MCG->C2 &= ~ MCG_C2_HGO_MASK;
+    MCG->C2 |= (static_cast <uint8_t>(g)) << MCG_C2_HGO_SHIFT;
 }
-uint8_t Mcg::getFllSource (){
-	return (MCG->S & MCG_S_IREFST_MASK)>>MCG_S_IREFST_SHIFT;
+uint8_t Mcg::getFllSource ()
+{
+	return MCG->S & MCG_S_IREFST_MASK;
 }
 
 uint8_t Mcg::getMcgOutSource (){
-	return (MCG->S & MCG_S_CLKST_MASK)>>MCG_S_CLKST_SHIFT;
+	return MCG->S & MCG_S_CLKST_MASK;
 }
 
 uint8_t Mcg::getIntSource (){
-	return (MCG->S & MCG_S_IRCST_MASK)>>MCG_S_IRCST_SHIFT;
+	return MCG->S & MCG_S_IRCST_MASK;
 }
 
 uint32_t & Mcg::getMcgOutClk (){

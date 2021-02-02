@@ -8,6 +8,7 @@
 enum class port {A , B , C , D , E};
 const uint32_t portAddress [5]={PORTA_BASE, PORTB_BASE, PORTC_BASE, PORTD_BASE, PORTE_BASE};
 const uint32_t gpioAddress [5]={PTA_BASE, PTB_BASE, PTC_BASE, PTD_BASE, PTE_BASE};
+const IRQn pinInt [5] = {PORTA_IRQn, PORTB_IRQn, PORTC_IRQn, PORTD_IRQn, PORTE_IRQn};
 //===SPI DEFENITION===//
 enum class numberSpi {SPI_0=0};
 const uint32_t spiAddress [1]={SPI0_BASE};
@@ -20,5 +21,9 @@ enum class dmaMux {uart0Rx = 2, uart0Tx, uart1Rx, uart1Tx, spi0Rx = 14,
 	pdb = 48, pta = 49, ptb, ptc, ptd, pte,	dma0 = 60, dma1, dma2, dma3};
 
 enum class dmaChannel {ch0, ch1, ch2 , ch3};
-//IRQn dmaInt [4] = {DMA0_IRQn, DMA1_IRQn, DMA2_IRQn, DMA3_IRQn};
+const IRQn dmaInt [4] = {DMA0_IRQn, DMA1_IRQn, DMA2_IRQn, DMA3_IRQn};
+
+//===PIT DEFENITION===//
+enum class pitChannel {ch0, ch1, ch2, ch3};
+const IRQn pitInt [4] = {PIT0_IRQn, PIT1_IRQn, PIT2_IRQn, PIT3_IRQn};
 #endif

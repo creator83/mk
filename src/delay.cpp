@@ -2,7 +2,7 @@
 
 void delay_ms (uint16_t del)
 {
-	Pit ms (Pit::channel::ch0, del, Pit::mode::ms);
+	Pit ms (pitChannel::ch3, del, Pit::mode::ms);
 	ms.start();
 	while (!(ms.flag_TIF()));
 	ms.stop();
@@ -10,7 +10,7 @@ void delay_ms (uint16_t del)
 }
 void delay_us (uint16_t del)
 {
-	Pit us (Pit::channel::ch0, del, Pit::mode::us);
+	Pit us (pitChannel::ch3, del, Pit::mode::us);
 	us.start();
 	while (!(us.flag_TIF()));
 	us.stop();

@@ -8,7 +8,7 @@ class Mcg
 {
   //variables
 public:
-	
+	enum class mcgOutSource {fll, internal, external};
 	enum class fllDivider {div1_32, div2_64, div4_128, div8_256, div16_512, 
 	div32_1024, div64_1280, div128_1536};
     enum class mcgOutClkDivider:uint8_t {div1, div2, div3, div4, div5, div6, div7, div8, div9, div10,
@@ -28,7 +28,9 @@ public:
 	uint8_t mcgOutValue;
     uint8_t fllSourceValue;
 	uint16_t fllInputClock;
-    uint8_t coreDivider, busDivider, flashDivider, flexbusDivider;
+    uint8_t coreDivider;
+    uint8_t busDivider;
+    uint8_t flashDivider;
     uint32_t mcgOutClk;
     uint32_t mcgIRClock;
     uint32_t fllClock;
@@ -56,7 +58,6 @@ public:
     void setCoreDivider (mcgOutClkDivider);
     void setBusDivider (mcgOutClkDivider);
     void setFlashDivider (mcgOutClkDivider);
-    void setFlexBusDivider (mcgOutClkDivider);
     void setFllMultiplication(dcoRange, multiplicationRangeFll);
     void setOscilator (oscilator);
     void setGain (gainOsc);

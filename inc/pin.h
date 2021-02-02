@@ -22,6 +22,7 @@ public:
 	void setPort (port);
 	void direction (mode m);
 	void setIn (PP pp_);
+    void setPull (PP pp_);
 	void setOut ();
 	void set();
 	void set (bool st);

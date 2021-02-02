@@ -1,5 +1,5 @@
 #include "device.h"
-#include "tact.h"
+#include "state.h"
 
 
 #ifndef PIT_H
@@ -13,14 +13,13 @@ class Pit
 {
   //variables
 public:
-	enum channel {ch0, ch1};
 	enum mode {khz, hz, ms, us};
 private:
 	uint8_t n_ch;
 	static ptr set_func [4];
-	Tact * tact;
+	State & tact;
 public:
-	Pit(channel ch, uint16_t n, mode m = ms);
+	Pit(pitChannel ch, uint16_t n, mode m = ms);
 	void clear_flag ();
 	bool flag_TIF ();
 	void start ();

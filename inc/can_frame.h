@@ -21,7 +21,7 @@ private:
 		
 public:
   
-  CanFrame (uint32_t id, uint32_t mbIndex, frameType ide, remoteFrame rtr, uint8_t dlc);
+    CanFrame (uint32_t id, uint32_t mbIndex, frameType ide, remoteFrame rtr, uint8_t dlc);
 	uint32_t & getId ();
 	uint32_t & getMbIndex ();
 	frameType & getIde ();

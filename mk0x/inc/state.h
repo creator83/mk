@@ -1,19 +1,10 @@
 #include "device.h"    
 #include "mcg.h"
 
-#ifndef TACT_H
-#define TACT_H
+#ifndef STATE_H
+#define STATE_H
 
-class Tact;
-class TactDestroyer
-{
-  private:
-    Tact* p_instance;
-  public:    
-    ~TactDestroyer();
-    void initialize( Tact* p );
-};
-class Tact
+class State
 {
   //variables
 public:
@@ -22,22 +13,18 @@ public:
 private:
 	uint8_t nPllFllSource;
 	uint8_t nLptmrSource;
-
+    static State * instancePtr;
 	static uint32_t cpuClock, busClock, mcgIRClock, mcgFFClock, mcgFLLClock;
 	Mcg mcg;
-	static Tact * p_instance;
-    static TactDestroyer destroyer;
 public:
-  
-	static Tact& getInstance();
+    
+    static State & getInstance();
 	uint32_t & getFrqBus ();
 	uint32_t & getFrqCpu ();
 	uint32_t & getFrqFlash ();
+private:
+    State ();
 protected:
-	Tact ();
-    Tact(Tact const&) = delete;
-    Tact& operator=(Tact const&) = delete;
-    friend class TactDestroyer;
 	void initFei ();
 	void initFee ();
 	void initFbi ();

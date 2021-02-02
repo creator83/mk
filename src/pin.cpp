@@ -19,7 +19,7 @@ Pin::Pin (port prt, uint8_t p )
 :Gpio(prt)
 {
 	pin_ = p;
-	portPtr->PCR[pin_] = (uint8_t)Gpio::mux::GPIO << PORT_PCR_MUX_SHIFT;
+	portPtr->PCR[pin_] = (uint8_t)mux::Gpio << PORT_PCR_MUX_SHIFT;
 	gpioPtr->PDDR |= 1 << pin_;
 }
 
@@ -27,7 +27,7 @@ Pin::Pin (port prt, uint8_t p , PP m)
 :Gpio(prt)
 {
 	pin_ = p;
-	portPtr->PCR[pin_] = (uint8_t)Gpio::mux::GPIO << PORT_PCR_MUX_SHIFT;
+	portPtr->PCR[pin_] = (uint8_t)mux::Gpio << PORT_PCR_MUX_SHIFT;
 	gpioPtr->PDDR &= ~(1 << pin_);
 	portPtr->PCR[pin_] |= PORT_PCR_PE_MASK;
 	portPtr->PCR[pin_] &= ~PORT_PCR_PS_MASK;
@@ -49,10 +49,14 @@ void Pin::setIn (PP pp_)
 {
 	gpioPtr->PDDR &= ~(1 << pin_);
 	portPtr->PCR[pin_] |= 1 << PORT_PCR_PE_MASK;
-	portPtr->PCR[pin_] &= ~ (1 << PORT_PCR_PS_MASK);
-	portPtr->PCR[pin_] |= (uint8_t)pp_ << PORT_PCR_PS_MASK;
+	portPtr->PCR[pin_] &= ~ PORT_PCR_PS_MASK;
+	portPtr->PCR[pin_] |= (uint8_t)pp_ << PORT_PCR_PS_SHIFT;
 }
-
+void Pin::setPull (PP pp_){
+    portPtr->PCR[pin_] |= 1 << PORT_PCR_PE_MASK;
+	portPtr->PCR[pin_] &= ~ PORT_PCR_PS_MASK;
+	portPtr->PCR[pin_] |= static_cast<uint8_t>(pp_) << PORT_PCR_PS_SHIFT;
+}
 void Pin::setOut ()
 {
 	gpioPtr->PDDR |= 1 << pin_;
