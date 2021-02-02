@@ -4,21 +4,22 @@
 #define DEVICE_H
 
 //===SIM DEFENITION===//
-const uint32_t SCGC1_OFFSET = 0x1028;
+/*const uint32_t SCGC1_OFFSET = 0x1028;
 const uint32_t SCGC2_OFFSET = 0x102C;
 const uint32_t SCGC3_OFFSET = 0x1030;
 const uint32_t SCGC4_OFFSET = 0x1034;
 const uint32_t SCGC5_OFFSET = 0x1038;
 const uint32_t SCGC6_OFFSET = 0x103C;
 const uint32_t SCGC7_OFFSET = 0x1040;
-
+*/
 //===GPIO DEFENITION===//
 enum class  port {A , B , C , D , E};
 enum class mux {Alt0, Gpio, Alt2 , Alt3 , Alt4 , Alt5 , Alt6 , Alt7};
-static PORT_Type * portAddress [5]={PORTA, PORTB, PORTC, PORTD, PORTE};
-static GPIO_Type * gpioAddress [5]={PTA, PTB, PTC, PTD, PTE};
-const IRQn pinInt [5] = {PORTA_IRQn, PORTB_IRQn, PORTC_IRQn, PORTD_IRQn, PORTE_IRQn};
+const uint32_t portAddress [5]={PORTA_BASE, PORTB_BASE, PORTC_BASE, PORTD_BASE, PORTE_BASE};
+const uint32_t gpioAddress [5]={GPIOA_BASE, GPIOB_BASE, GPIOC_BASE, GPIOD_BASE, GPIOE_BASE};
 
+const IRQn pinInt [5] = {PORTA_IRQn, PORTB_IRQn, PORTC_IRQn, PORTD_IRQn, PORTE_IRQn};
+/*
 //===MODE STATE DEFENITION===//
 enum class state {FEI, FEE, FBI, FBE, BLPE, BLPI, PBE, PEE};
 enum class lptmrSource {osc32, lpo=3};
@@ -39,7 +40,7 @@ const uint32_t extFllDividerArr[2][8] = {{32, 64, 128, 256, 512, 1024, 1280, 153
 enum class numberSpi {SPI_0, SPI_1, SPI_2};
 const uint32_t spiAddress [3]={SPI0_BASE, SPI1_BASE, SPI2_BASE};
 const uint32_t spiClockShift [1]={12};
-/*
+
 //===DMA DEFENITION===//
 enum class dmaMux {uart0Rx = 2, uart0Tx, uart1Rx, uart1Tx, spi0Rx = 14, 
 	spi0Tx, i2c=18, ftm0ch0=20, ftm0ch1, ftm0ch2, ftm0ch3, ftm0ch4, ftm0ch5,
@@ -50,7 +51,7 @@ enum class dmaChannel {ch0, ch1, ch2 , ch3, ch4, ch5, ch6 , ch7, ch8, ch9, ch10 
 const IRQn dmaInt [16] = {DMA0_IRQn, DMA1_IRQn, DMA2_IRQn, DMA3_IRQn, DMA4_IRQn, DMA5_IRQn, DMA6_IRQn,
                           DMA7_IRQn, DMA8_IRQn, DMA9_IRQn, DMA10_IRQn, DMA11_IRQn, DMA12_IRQn, DMA13_IRQn, 
                           DMA14_IRQn, DMA15_IRQn};
-*/
+
 //===CAN DEFENITION===//
 enum class numberCan {CAN_0, CAN_1};
 const uint32_t canBaseAddress [2]={CAN0_BASE, CAN1_BASE};
@@ -75,5 +76,5 @@ const uint32_t uartClock [6][2]={{SIM_BASE+SCGC4_OFFSET, SIM_SCGC4_UART0_MASK},
                                  {SIM_BASE+SCGC1_OFFSET, SIM_SCGC1_UART4_MASK},
                                  {SIM_BASE+SCGC1_OFFSET, SIM_SCGC1_UART5_MASK},
                                  };
-
+*/
 #endif
